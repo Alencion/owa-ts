@@ -1,26 +1,23 @@
 import axios from "axios"
 import { OpenApiException } from "../exception/exception"
+import YAML from 'yaml'
 
-interface Document {
-    openapi: string
-}
-
-export async function parseOpenApi(url:string, option?: any): Promise<Document> {
+export async function parseOpenApi(url  :string, option?: any): Promise<Documentation> {
     const response = await axios.get(url)
 
     if (response.status != 200) {
-        throw new  OpenApiException()
+        throw new OpenApiException()
     }
-    console.log(response)
 
     // switch 
-    switch (response.headers["Content-Type"]) {
-        case "text/plain":
-            break;
+    switch (response.headers["content-type"]) {
+        case "application/json":
+            return response.data
         case "text/yaml":
-            break;
+            return YAML.parse(response.data)
+        case "text/plain":
+            break 
     }
 
-    
-    return {openapi: "open-api"}
+    throw new OpenApiException()
 }
