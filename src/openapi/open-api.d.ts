@@ -1,4 +1,5 @@
 import { Schema } from "yaml"
+import { string } from "yaml/dist/schema/common/string"
 
 interface Documentation {
     openapi: string
@@ -141,5 +142,80 @@ interface Callback {
 }
 
 interface Example {
+    summary?: string
+    description?: string
+    value?: any
+    externalValue?: string
+}
 
+interface Link {
+    operationRef?: string
+    operationId?: string
+    parameters?: Map<string, any>
+    requestBody?: any
+    description?: string
+    server?: Server
+}
+
+interface Header extends Paramter {}
+
+interface Tag {
+    name: string
+    description?: string
+    externalDocs?: ExternalDocumentation
+}
+
+interface Reference {
+    "$ref": string
+    summary?: string
+    description?: string
+}
+
+interface Schema {
+    disscriminator?: Discriminator
+    xml?: XML
+    externalDocs?: ExternalDocumentation
+    example?: any
+}
+
+interface Discriminator {
+    propertyName: string
+    mapping?: Map<string, string>
+}
+
+interface XML {
+    name?: string
+    namespace?: string
+    prefix?: string
+    attribute: boolean = false
+    wrapped?: boolean = false
+}
+
+interface SecurityScheme {
+    type: string
+    description?: string
+    name: string
+    in: string
+    scheme: string
+    bearerFormat?: string
+    flows: OAuthFlows
+    openIdConnectUrl: string
+}
+
+interface OAuthFlows {
+    implicit?: OAuthFlow
+    password?: OAuthFlow
+    clientCredentials?: OAuthFlow
+    authorizationCode?: OAuthFlow
+}
+
+interface OAuthFlow {
+    authorizationUrl: string
+    tokenUrl: string
+    refreshUrl?: string
+    scopes: Map<string, string>
+}
+
+interface SecurityRequirement {
+    [name: string]: string[]
 }
